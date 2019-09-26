@@ -1,12 +1,66 @@
 import React from 'react';
+import {useState} from 'react';
 import ReactDOM from 'react-dom';
+
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
+const App = () => {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     Todo: 0
+  //   };
+
+
+
+
+ const [Todo, setTodo] = useState('');
+  const [Todos,setTodos] = useState([]);
+  function todochange(e){
+    e.preventDefault()
+    setTodo(e.target.value)
+    
+
+  }
+function todoarray(e){
+  e.preventDefault()
+  if(Todo ===" ") return
+  console.log(Todo);
+  setTodos ([...Todos ,{id: Date.now(),text:Todo}])
+  e.target.reset();
+  console.log(Todos);
+ 
+}
+function removeTodo(id){
+  setTodos(Todos.filter ((Todo) =>Todo.id !== id ) ) 
+}
+
+
+
+  return (
+    
+    <div className="App">
+      <h1 className="title">MY LIST OF TODOS</h1>
+      <form className="box" onSubmit={todoarray}> 
+      <input placeholder="your todo..." onChange={todochange}></input>
+      </form>
+
+     
+           <ul className="todolist">
+        {Todos.map(
+          (Todo)=>(
+            <li className="todo" key={Todo.id}>{Todo.text}
+            <button className="button1" onClick={()=>removeTodo(Todo.id)}>Delete</button>
+            </li>
+          ))}
+      </ul>
+    
+
+    </div>
+  );
+};
+
+const rootElement = document.getElementById('root');
+ReactDOM.render(<App/>, rootElement);
